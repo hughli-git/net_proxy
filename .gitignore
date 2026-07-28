@@ -1,0 +1,13 @@
+# Virtual environments and Python caches
+.venv/
+__pycache__/
+*.py[cod]
+
+# Runtime and workspace state
+logs/
+.agents/
+.codex/
+
+# Local historical copies
+proxy_v2.py
+proxy_no_audit.py

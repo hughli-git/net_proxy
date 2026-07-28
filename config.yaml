@@ -1,0 +1,49 @@
+# filter: out logs ->, filter: in logs <-, and null logs both directions.
+host: 127.0.0.1
+port: 8080
+buffer_size: 65536
+connect_timeout: 10.0
+filter: null
+
+domain_policy:
+  default: allow
+  rules:
+    # Domain rules use the first domain match; IP/CIDR is the fallback.
+    # Put allow exceptions before broader deny rules.
+    - action: allow
+      match: exact
+      domains:
+        - required.analytics.example.com
+
+    - action: deny
+      match: exact
+      domains:
+        - ads.example.com
+        - tracker.example.net
+
+    - action: deny
+      match: suffix
+      domains:
+        - example.org
+        - analytics.example.com
+
+    - action: deny
+      match: wildcard
+      domains:
+        - "*.blocked.example"
+
+    - action: deny
+      match: regex
+      patterns:
+        - "^ad[0-9]+\\.example\\.com$"
+
+    - action: deny
+      match: ip_cidr
+      networks:
+        - 192.0.2.10
+        - 198.51.100.0/24
+
+    - action: audit
+      match: suffix
+      domains:
+        - test.example.net
